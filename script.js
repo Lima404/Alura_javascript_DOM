@@ -9,13 +9,14 @@ const musicaFocoinput = document.querySelector('#alternar-musica')
 const startbt = document.querySelector('#start-pause')
 const Iniciar_Pausebt = document.querySelector('#start-pause span')
 const imagePause = document.querySelector('.app__card-primary-butto-icon')
+const timer = document.querySelector('#timer')
 const musica = new Audio ('/sons/luna-rise-part-one.mp3')
 const playmusic = new Audio ('/sons/play.wav')
 const pausemusic = new Audio ('/sons/pause.mp3')
 const beepmusic = new Audio ('/sons/beep.mp3')
 musica.loop = true
 
-let tempoSegundos = 5
+let tempoSegundos = 1500
 let intervaloId = null
 
 musicaFocoinput.addEventListener('change', () => {
@@ -28,20 +29,24 @@ musicaFocoinput.addEventListener('change', () => {
 })
 
 focobt.addEventListener('click', () => {
+    tempoSegundos = 1500
     alterarContexto('foco')
     focobt.classList.add('active')
 })
 curtobt.addEventListener('click', () => {
+    tempoSegundos = 300
     alterarContexto('descanso-curto')
     curtobt.classList.add('active')
 })
 longobt.addEventListener('click', () => {
+    tempoSegundos = 900
     alterarContexto('descanso-longo')
     longobt.classList.add('active')
 })
 
 function alterarContexto (contexto){
 
+    mostrarTempo()
     botoes.forEach(function(contexto){
         contexto.classList.remove('active')
     })
@@ -87,7 +92,7 @@ const contRegress = () => {
         return
     }
     tempoSegundos -= 1
-    console.log('temporizador: ' + tempoSegundos);
+    mostrarTempo()
 }
 
 startbt.addEventListener('click', iniciar)
@@ -111,3 +116,10 @@ function zerar(){
     intervaloId = null
 }
 
+function mostrarTempo(){
+    const tempo = new Date(tempoSegundos * 1000)
+    const tempoFormatado = tempo.toLocaleString('pt-br', {minute: '2-digit', second: '2-digit'})
+    timer.innerHTML = `${tempoFormatado}`
+}
+
+mostrarTempo()
